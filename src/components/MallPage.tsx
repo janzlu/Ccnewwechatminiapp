@@ -449,21 +449,40 @@ const products = [
 export default function MallPage({ onProductClick, onCartClick }: MallPageProps) {
   const [selectedMainCategory, setSelectedMainCategory] = useState('finished');
   const [selectedSubCategory, setSelectedSubCategory] = useState('方片');
+  const [selectedGrade, setSelectedGrade] = useState<string>('');
 
   const currentSubCategories = subCategories[selectedMainCategory as keyof typeof subCategories];
+  
+  // 处理原料分类的逻辑
+  const isMaterial = selectedMainCategory === 'material';
+  
+  // 如果是原料，默认选中 N系列
+  if (isMaterial && !subCategories.material.includes(selectedSubCategory)) {
+    // 这种副作用在渲染中直接处理不太好，最好在点击大类时重置
+    // 这里只用来做数据获取的fallback
+  }
+
   const filteredProducts = products.filter(
     (p) => p.category === selectedMainCategory && p.subCategory === selectedSubCategory
   );
 
   // 获取当前原料系列的报价数据
-  const currentMaterialPricings = selectedMainCategory === 'material' 
+  const currentMaterialPricings = isMaterial
     ? materialPricing[selectedSubCategory as keyof typeof materialPricing] || []
     : [];
+
+  // 获取当前选中的牌号数据
+  const activeGradeData = currentMaterialPricings.find(p => p.grade === selectedGrade) || currentMaterialPricings[0];
+  
+  // 确定左侧显示的列表项
+  const leftSidebarItems = isMaterial 
+    ? currentMaterialPricings.map(p => p.grade)
+    : currentSubCategories;
 
   return (
     <div className="min-h-full bg-[#F9F9FB] flex flex-col">
       {/* 搜索框和分类切换 */}
-      <div className="bg-white px-4 py-3 space-y-3">
+      <div className="bg-white px-4 py-3 space-y-3 shadow-sm z-10">
         {/* 搜索框 */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#A4A9AE]" size={20} />
@@ -487,17 +506,22 @@ export default function MallPage({ onProductClick, onCartClick }: MallPageProps)
         </div>
 
         {/* 大类切换 */}
-        <div className="flex gap-2">
+        <div className="flex gap-2 justify-around">
           {mainCategories.map((category) => (
             <button
               key={category.id}
               onClick={() => {
                 setSelectedMainCategory(category.id);
-                setSelectedSubCategory(subCategories[category.id as keyof typeof subCategories][0]);
+                const firstSub = subCategories[category.id as keyof typeof subCategories][0];
+                setSelectedSubCategory(firstSub);
+                // 如果切换到原料，重置选中的牌号
+                if (category.id === 'material') {
+                   setSelectedGrade(''); 
+                }
               }}
-              className={`flex-1 h-10 transition-all relative ${
+              className={`pb-2 px-4 transition-all relative font-medium ${
                 selectedMainCategory === category.id
-                  ? 'text-[#456EFE] font-bold after:content-[""] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-[24px] after:h-[2px] after:bg-[#456EFE] after:rounded-full'
+                  ? 'text-[#456EFE] after:content-[""] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-[20px] after:h-[3px] after:bg-[#456EFE] after:rounded-full'
                   : 'text-[#8E949A]'
               }`}
             >
@@ -507,66 +531,95 @@ export default function MallPage({ onProductClick, onCartClick }: MallPageProps)
         </div>
       </div>
 
-      {/* 子类目和产品列表 */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* 左侧子类目 */}
-        <div className="w-24 bg-white overflow-y-auto flex-none">
-          {currentSubCategories.map((subCat) => (
-            <button
-              key={subCat}
-              onClick={() => setSelectedSubCategory(subCat)}
-              className={`w-full py-4 px-2 text-sm border-l-2 transition-all ${
-                selectedSubCategory === subCat
-                  ? 'bg-[#F9F9FB] border-[#456EFE] text-[#456EFE]'
-                  : 'border-transparent text-[#8E949A]'
-              }`}
-            >
-              {subCat}
-            </button>
-          ))}
-        </div>
+      {/* 内容区域 */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* 如果是原料，系列选择全宽显示在顶部 */}
+        {isMaterial && (
+          <div className="w-full px-4 pt-3 pb-1 flex-none z-[5]">
+             <div className="flex gap-2 overflow-x-auto pb-2 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+                {subCategories.material.map((series) => (
+                  <button
+                    key={series}
+                    onClick={() => {
+                      setSelectedSubCategory(series);
+                      setSelectedGrade(''); // 重置牌号，默认选中第一个
+                    }}
+                    className={`px-4 py-1.5 rounded-lg text-sm whitespace-nowrap transition-colors flex-none ${
+                      selectedSubCategory === series
+                        ? 'bg-[#E8F0FF] text-[#456EFE] font-medium'
+                        : 'bg-white text-[#8E949A]'
+                    }`}
+                  >
+                    {series}
+                  </button>
+                ))}
+             </div>
+          </div>
+        )}
 
-        {/* 右侧内容区域 */}
-        <div className="flex-1 overflow-y-auto p-4">
-          {selectedMainCategory === 'material' && currentMaterialPricings.length > 0 ? (
-            // 原料报价展示 - 循环显示多个牌号
-            <div className="space-y-4">
-              {currentMaterialPricings.map((pricing, pricingIndex) => (
-                <div key={pricingIndex} className="bg-white rounded-xl p-4 shadow-sm">
-                  <div className="px-2">
-                    {/* 顶部牌号和参数 */}
-                    <div className="flex items-center justify-between mb-3 pb-2 border-b border-[rgba(164,169,174,0.15)]">
-                      <div className="flex items-center gap-2">
-                        <Bookmark size={16} className="text-[#456EFE]" />
-                        <span className="text-[#8E949A] text-xs">牌号:</span>
-                        <span className="text-[#23303B] text-sm text-[15px] font-bold">{pricing.grade}</span>
-                      </div>
-                      <div className="flex items-center gap-3 text-xs">
-                        <span className="text-[#8E949A] text-[11px]">Br(kGs): <span className="text-[#23303B]">{pricing.br}</span></span>
-                        <span className="text-[#8E949A] text-[11px]">Hcj(kOe): <span className="text-[#23303B]">{pricing.hcj}</span></span>
-                      </div>
+        <div className="flex-1 flex overflow-hidden">
+          {/* 左侧侧边栏 */}
+          <div className="w-16 bg-white overflow-y-auto flex-none pb-20 border-r border-gray-100">
+            {leftSidebarItems.map((item) => {
+              const isSelected = isMaterial 
+                ? (activeGradeData?.grade === item)
+                : (selectedSubCategory === item);
+                
+              return (
+                <button
+                  key={item}
+                  onClick={() => {
+                    if (isMaterial) {
+                      setSelectedGrade(item);
+                    } else {
+                      setSelectedSubCategory(item);
+                    }
+                  }}
+                  className={`w-full py-4 px-1 text-sm transition-all text-center ${
+                    isSelected
+                      ? 'text-[#23303B] font-medium bg-[#F9F9FB] relative before:absolute before:left-0 before:top-1/2 before:-translate-y-1/2 before:w-[3px] before:h-[16px] before:bg-[#456EFE] before:rounded-r'
+                      : 'text-[#8E949A] bg-white'
+                  }`}
+                >
+                  {item}
+                </button>
+              );
+            })}
+          </div>
+
+          {/* 右侧内容区域 */}
+          <div className="flex-1 overflow-y-auto p-4 pb-24">
+            {isMaterial ? (
+              // 原料页面布局
+              <div className="flex flex-col h-full">
+                {/* 选中牌号详情 */}
+                {activeGradeData && (
+                  <div className="bg-white rounded-2xl p-5 shadow-sm flex-1">
+                    {/* 参数 */}
+                    <div className="flex items-center gap-4 text-sm text-[#8E949A] mb-4">
+                      <span>Br(kGs): <span className="text-[#23303B]">{activeGradeData.br}</span></span>
+                      <span>Hcj(kOe): <span className="text-[#23303B]">{activeGradeData.hcj}</span></span>
                     </div>
 
                     {/* 毛坯价 */}
-                    <div className="mb-4">
-                      <div className="text-[#8E949A] text-xs mb-1">毛坯价</div>
-                      <div className="text-[#456EFE] text-xl text-[16px] font-bold font-normal">¥ {pricing.blankPrice.toLocaleString()}</div>
+                    <div className="mb-6">
+                      <div className="text-[#8E949A] text-sm mb-1">毛坯价</div>
+                      <div className="text-[#456EFE] text-[24px] font-bold">¥ {activeGradeData.blankPrice.toLocaleString()}</div>
                     </div>
 
-                    {/* 价格表格 - 2列布局 */}
-                    <div className="grid grid-cols-2 gap-x-6 gap-y-2">
-                      {pricing.prices.map((item, index) => (
-                        <div key={index} className="flex items-center justify-between py-1.5 px-2 rounded bg-[rgba(164,169,174,0.05)]">
-                          <span className="text-[#8E949A] text-xs text-[11px]">{item.range}</span>
-                          <span className="text-[#23303B] text-xs">¥ {item.price}</span>
+                    {/* 价格列表 */}
+                    <div className="grid grid-cols-2 gap-3">
+                      {activeGradeData.prices.map((item, index) => (
+                        <div key={index} className="flex items-center justify-between py-2 px-3 rounded bg-[#F9F9FB]">
+                          <span className="text-[#8E949A] text-xs">{item.range}</span>
+                          <span className="text-[#23303B] text-sm font-medium">¥ {item.price}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : (
+                )}
+              </div>
+            ) : (
             // 成品和毛坯的商品列表展示
             <>
               {filteredProducts.length === 0 ? (
@@ -645,6 +698,7 @@ export default function MallPage({ onProductClick, onCartClick }: MallPageProps)
             </>
           )}
         </div>
+      </div>
       </div>
     </div>
   );

@@ -56,46 +56,12 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
 
   return (
     <div className="min-h-full bg-[#F5F6F8] pb-24">
-      {/* 步骤指示器 */}
-      <div className="bg-white px-4 py-5 mb-3">
-        <div className="flex items-center justify-between max-w-[320px] mx-auto">
-          {/* 步骤1 - 当前步骤 */}
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-[#456EFE] flex items-center justify-center mb-2">
-              <span className="text-white text-sm">1</span>
-            </div>
-            <span className="text-xs text-[#456EFE]">磁材计算</span>
-          </div>
 
-          {/* 连接线1 */}
-          <div className="flex-1 h-[2px] bg-[rgba(164,169,174,0.2)] mx-3 mb-5"></div>
-
-          {/* 步骤2 - 未完成 */}
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-[rgba(164,169,174,0.1)] flex items-center justify-center mb-2">
-              <span className="text-[#A4A9AE] text-sm">2</span>
-            </div>
-            <span className="text-xs text-[#A4A9AE]">价格计算</span>
-          </div>
-
-          {/* 连接线2 */}
-          <div className="flex-1 h-[2px] bg-[rgba(164,169,174,0.2)] mx-3 mb-5"></div>
-
-          {/* 步骤3 - 未完成 */}
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-[rgba(164,169,174,0.1)] flex items-center justify-center mb-2">
-              <span className="text-[#A4A9AE] text-sm">3</span>
-            </div>
-            <span className="text-xs text-[#A4A9AE]">确认下单</span>
-          </div>
-        </div>
-      </div>
-
-      <div className="p-4 space-y-6">
+      <div className="p-4 space-y-4">
         {/* 选择分类 */}
         <div>
-          <h3 className="text-[#23303B] mb-3">选择分类</h3>
-          <div className="grid grid-cols-4 gap-3">
+          <h3 className="text-[#23303B] text-sm mb-2">选择分类</h3>
+          <div className="grid grid-cols-4 gap-2">
             {categories.map((category) => {
               const IconComponent = category.Icon;
               return (
@@ -112,18 +78,18 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
                     setArcAngle('');
                     setMagnetizationHeight('');
                   }}
-                  className={`aspect-square rounded-2xl flex flex-col items-center justify-center gap-2 transition-all ${
+                  className={`aspect-square rounded-md flex flex-col items-center justify-center gap-1 transition-all p-2 ${
                     selectedCategory === category.id
                       ? 'bg-[#E8F0FF] border-2 border-[#456EFE]'
                       : 'bg-white border-2 border-transparent'
                   }`}
                 >
                   <IconComponent
-                    size={32}
+                    size={24}
                     className={selectedCategory === category.id ? 'text-[#456EFE]' : 'text-[#23303B]'}
                   />
                   <span
-                    className={`text-sm ${
+                    className={`text-xs ${
                       selectedCategory === category.id ? 'text-[#456EFE]' : 'text-[#23303B]'
                     }`}
                   >
@@ -137,12 +103,12 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
 
         {/* 性能 */}
         <div>
-          <h3 className="text-[#23303B] mb-3">性能</h3>
+          <h3 className="text-[#23303B] text-sm mb-2">性能</h3>
           <div className="relative">
             <select
               value={performance}
               onChange={(e) => setPerformance(e.target.value)}
-              className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] appearance-none pr-12 shadow-sm"
+              className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] appearance-none pr-10 shadow-sm"
               style={{ color: performance ? '#23303B' : '#A4A9AE' }}
             >
               <option value="">请选择性能等级</option>
@@ -152,13 +118,13 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE] pointer-events-none" size={20} />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] pointer-events-none" size={16} />
           </div>
         </div>
 
         {/* 原料单价 */}
         <div>
-          <h3 className="text-[#23303B] mb-3">原料单价</h3>
+          <h3 className="text-[#23303B] text-sm mb-2">原料单价</h3>
           <div className="relative">
             <input
               type="number"
@@ -166,9 +132,9 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
               value={unitPrice}
               onChange={(e) => setUnitPrice(e.target.value)}
               disabled={inputMode === 'auto'}
-              className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm disabled:bg-gray-50 disabled:cursor-not-allowed"
+              className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm disabled:bg-gray-50 disabled:cursor-not-allowed"
             />
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">元</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">元</span>
           </div>
         </div>
 
@@ -177,43 +143,43 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
           <>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <h3 className="text-[#23303B] mb-3">长度</h3>
+                <h3 className="text-[#23303B] text-sm mb-2">长度</h3>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
                     value={length}
                     onChange={(e) => setLength(e.target.value)}
-                    className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                    className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
                 </div>
               </div>
               <div>
-                <h3 className="text-[#23303B] mb-3">宽度</h3>
+                <h3 className="text-[#23303B] text-sm mb-2">宽度</h3>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
                     value={width}
                     onChange={(e) => setWidth(e.target.value)}
-                    className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                    className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
                 </div>
               </div>
             </div>
             <div>
-              <h3 className="text-[#23303B] mb-3">厚度</h3>
+              <h3 className="text-[#23303B] text-sm mb-2">厚度</h3>
               <div className="relative">
                 <input
                   type="number"
                   placeholder="0.00"
                   value={thickness}
                   onChange={(e) => setThickness(e.target.value)}
-                  className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                  className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
               </div>
             </div>
           </>
@@ -224,29 +190,29 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
           <>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <h3 className="text-[#23303B] mb-3">直径</h3>
+                <h3 className="text-[#23303B] text-sm mb-2">直径</h3>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
                     value={diameter}
                     onChange={(e) => setDiameter(e.target.value)}
-                    className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                    className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
                 </div>
               </div>
               <div>
-                <h3 className="text-[#23303B] mb-3">厚度</h3>
+                <h3 className="text-[#23303B] text-sm mb-2">厚度</h3>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
                     value={thickness}
                     onChange={(e) => setThickness(e.target.value)}
-                    className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                    className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
                 </div>
               </div>
             </div>
@@ -258,43 +224,43 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
           <>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <h3 className="text-[#23303B] mb-3">外径</h3>
+                <h3 className="text-[#23303B] text-sm mb-2">外径</h3>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
                     value={outerDiameter}
                     onChange={(e) => setOuterDiameter(e.target.value)}
-                    className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                    className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
                 </div>
               </div>
               <div>
-                <h3 className="text-[#23303B] mb-3">内径</h3>
+                <h3 className="text-[#23303B] text-sm mb-2">内径</h3>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
                     value={innerDiameter}
                     onChange={(e) => setInnerDiameter(e.target.value)}
-                    className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                    className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
                 </div>
               </div>
             </div>
             <div>
-              <h3 className="text-[#23303B] mb-3">厚度</h3>
+              <h3 className="text-[#23303B] text-sm mb-2">厚度</h3>
               <div className="relative">
                 <input
                   type="number"
                   placeholder="0.00"
                   value={thickness}
                   onChange={(e) => setThickness(e.target.value)}
-                  className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                  className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                 />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
               </div>
             </div>
           </>
@@ -305,57 +271,57 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
           <>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <h3 className="text-[#23303B] mb-3">外径</h3>
+                <h3 className="text-[#23303B] text-sm mb-2">外径</h3>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
                     value={outerDiameter}
                     onChange={(e) => setOuterDiameter(e.target.value)}
-                    className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                    className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
                 </div>
               </div>
               <div>
-                <h3 className="text-[#23303B] mb-3">内径</h3>
+                <h3 className="text-[#23303B] text-sm mb-2">内径</h3>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
                     value={innerDiameter}
                     onChange={(e) => setInnerDiameter(e.target.value)}
-                    className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                    className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <h3 className="text-[#23303B] mb-3">厚度</h3>
+                <h3 className="text-[#23303B] text-sm mb-2">厚度</h3>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
                     value={thickness}
                     onChange={(e) => setThickness(e.target.value)}
-                    className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                    className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
                 </div>
               </div>
               <div>
-                <h3 className="text-[#23303B] mb-3">弧度</h3>
+                <h3 className="text-[#23303B] text-sm mb-2">弧度</h3>
                 <div className="relative">
                   <input
                     type="number"
                     placeholder="0.00"
                     value={arcAngle}
                     onChange={(e) => setArcAngle(e.target.value)}
-                    className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+                    className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
                   />
-                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">°</span>
+                  <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">°</span>
                 </div>
               </div>
             </div>
@@ -364,27 +330,27 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
 
         {/* 磁化高度 - 所有类型共用 */}
         <div>
-          <h3 className="text-[#23303B] mb-3">磁化高度</h3>
+          <h3 className="text-[#23303B] text-sm mb-2">磁化高度</h3>
           <div className="relative">
             <input
               type="number"
               placeholder="0.00"
               value={magnetizationHeight}
               onChange={(e) => setMagnetizationHeight(e.target.value)}
-              className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] placeholder:text-[#A4A9AE] pr-12 shadow-sm"
+              className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] placeholder:text-[#A4A9AE] pr-10 shadow-sm"
             />
-            <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE]">mm</span>
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] text-sm">mm</span>
           </div>
         </div>
 
         {/* 表面镀层 */}
         <div>
-          <h3 className="text-[#23303B] mb-3">表面镀层</h3>
+          <h3 className="text-[#23303B] text-sm mb-2">表面镀层</h3>
           <div className="relative">
             <select
               value={coating}
               onChange={(e) => setCoating(e.target.value)}
-              className="w-full h-14 px-4 bg-white rounded-2xl text-[#23303B] appearance-none pr-12 shadow-sm"
+              className="w-full h-10 px-3 bg-white rounded-md text-sm text-[#23303B] appearance-none pr-10 shadow-sm"
               style={{ color: coating ? '#23303B' : '#A4A9AE' }}
             >
               <option value="">请选择镀层类型</option>
@@ -394,7 +360,7 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
                 </option>
               ))}
             </select>
-            <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-[#A4A9AE] pointer-events-none" size={20} />
+            <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-[#A4A9AE] pointer-events-none" size={16} />
           </div>
         </div>
       </div>
@@ -416,10 +382,10 @@ export default function CalculatorPage({ onStartCalculate, initialCategory }: Ca
         className="fixed bottom-36 right-4 flex flex-col items-center gap-1 transition-all hover:opacity-80 active:scale-95 z-30"
         title={inputMode === 'auto' ? '切换到手动模式' : '切换到自动模式'}
       >
-        <div className="w-14 h-14 bg-[#456EFE] text-white rounded-full shadow-lg flex items-center justify-center">
-          <Edit3 size={24} />
+        <div className="w-9 h-9 bg-[rgb(149,19,219)] text-white rounded-full shadow-lg flex items-center justify-center">
+          <Edit3 size={16} />
         </div>
-        <span className="text-xs text-[#456EFE] bg-white px-2 py-0.5 rounded shadow-sm">
+        <span className="text-[10px] text-[#456EFE] bg-white px-1.5 py-0.5 rounded shadow-sm">
           {inputMode === 'auto' ? '自动' : '手动'}
         </span>
       </button>

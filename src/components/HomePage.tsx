@@ -6,40 +6,40 @@ import heroBackground from 'figma:asset/b82b2255591ef730519442050caab0cc10ea8edb
 // 模拟行情数据 - 更大范围的数据
 const marketData = {
   '镨钕金属': [
-    { date: 'Jul', price: 200 },
-    { date: 'Aug', price: 400 },
-    { date: 'Sep', price: 600 },
-    { date: 'Oct', price: 180 },
-    { date: 'Nov', price: 520 },
-    { date: 'Dec', price: 280 },
-    { date: 'Jan', price: 673 },
+    { date: '12/09', price: 200 },
+    { date: '12/10', price: 400 },
+    { date: '12/11', price: 600 },
+    { date: '12/12', price: 180 },
+    { date: '12/13', price: 520 },
+    { date: '12/14', price: 280 },
+    { date: '12/15', price: 673 },
   ],
   '镨钕氧化物': [
-    { date: 'Jul', price: 180 },
-    { date: 'Aug', price: 350 },
-    { date: 'Sep', price: 550 },
-    { date: 'Oct', price: 160 },
-    { date: 'Nov', price: 480 },
-    { date: 'Dec', price: 250 },
-    { date: 'Jan', price: 620 },
+    { date: '12/09', price: 180 },
+    { date: '12/10', price: 350 },
+    { date: '12/11', price: 550 },
+    { date: '12/12', price: 160 },
+    { date: '12/13', price: 480 },
+    { date: '12/14', price: 250 },
+    { date: '12/15', price: 620 },
   ],
   '金属镝': [
-    { date: 'Jul', price: 250 },
-    { date: 'Aug', price: 420 },
-    { date: 'Sep', price: 630 },
-    { date: 'Oct', price: 200 },
-    { date: 'Nov', price: 550 },
-    { date: 'Dec', price: 300 },
-    { date: 'Jan', price: 700 },
+    { date: '12/09', price: 250 },
+    { date: '12/10', price: 420 },
+    { date: '12/11', price: 630 },
+    { date: '12/12', price: 200 },
+    { date: '12/13', price: 550 },
+    { date: '12/14', price: 300 },
+    { date: '12/15', price: 700 },
   ],
   '镝铁合金': [
-    { date: 'Jul', price: 220 },
-    { date: 'Aug', price: 380 },
-    { date: 'Sep', price: 580 },
-    { date: 'Oct', price: 190 },
-    { date: 'Nov', price: 500 },
-    { date: 'Dec', price: 270 },
-    { date: 'Jan', price: 650 },
+    { date: '12/09', price: 220 },
+    { date: '12/10', price: 380 },
+    { date: '12/11', price: 580 },
+    { date: '12/12', price: 190 },
+    { date: '12/13', price: 500 },
+    { date: '12/14', price: 270 },
+    { date: '12/15', price: 650 },
   ],
 };
 
@@ -58,9 +58,10 @@ interface HomePageProps {
   onNavigateToCalculator?: (category: string) => void;
   onNavigateToMall?: () => void;
   onNavigateToSell?: () => void;
+  onNavigateToMarket?: () => void;
 }
 
-export default function HomePage({ onNavigateToCalculator, onNavigateToMall, onNavigateToSell }: HomePageProps) {
+export default function HomePage({ onNavigateToCalculator, onNavigateToMall, onNavigateToSell, onNavigateToMarket }: HomePageProps) {
   const [selectedMaterial, setSelectedMaterial] = useState<keyof typeof marketData>('镨钕金属');
 
   const currentData = marketData[selectedMaterial];
@@ -114,7 +115,7 @@ export default function HomePage({ onNavigateToCalculator, onNavigateToMall, onN
       {/* 磁材料行情趋势图 */}
       <div className="mx-3 mt-3 bg-white rounded-2xl p-4 shadow-sm">
         {/* 材料切换 */}
-        <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+        <div className="flex gap-2 mb-4 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {(Object.keys(marketData) as Array<keyof typeof marketData>).map((material) => (
             <button
               key={material}
@@ -135,7 +136,7 @@ export default function HomePage({ onNavigateToCalculator, onNavigateToMall, onN
           <div className="flex items-baseline gap-3 mb-2">
             <span className="text-[36px] text-[#23303B] leading-none">{currentPrice}</span>
             <div className="flex items-center gap-3">
-              <span className={`text-lg ${parseFloat(priceChangePercent) >= 0 ? 'text-[#13C999]' : 'text-[#FF6363]'}`}>
+              <span className={`text-lg ${parseFloat(priceChangePercent) >= 0 ? 'text-[#FF6363]' : 'text-[#13C999]'}`}>
                 {parseFloat(priceChangePercent) >= 0 ? '+' : ''}
                 {priceChangePercent}%
               </span>
@@ -147,7 +148,7 @@ export default function HomePage({ onNavigateToCalculator, onNavigateToMall, onN
               涨跌值: <span className="text-[#23303B]">+{weekChange}</span>
             </span>
             <span className="text-[#8E949A]">
-              涨跌幅: <span className="text-[#FF6363]">{weekChangePercent}%</span>
+              涨跌幅: <span className="text-[#13C999]">{weekChangePercent}%</span>
             </span>
           </div>
         </div>
@@ -189,6 +190,61 @@ export default function HomePage({ onNavigateToCalculator, onNavigateToMall, onN
             />
           </LineChart>
         </ResponsiveContainer>
+      </div>
+
+      {/* 市场报价 */}
+      <div className="mx-3 mt-3">
+        <div className="flex items-center justify-between mb-[8px] px-1 mt-[20px] mr-[0px] ml-[0px]">
+          <h3 className="text-[#23303B] text-sm font-medium text-[20px]">市场报价</h3>
+          <span className="text-xs text-[#A4A9AE]">更新: 11-29 14:30</span>
+        </div>
+        
+        <div className="space-y-2">
+          {[
+            { name: '钕铁硼', price: 498, unit: '元/kg', day: -4, dayPct: -0.80, week: 8, weekPct: 1.63 },
+            { name: '镨钕氧化物', price: 430, unit: '元/kg', day: -2, dayPct: -0.46, week: 5, weekPct: 1.18 },
+            { name: '金属镝', price: 2910, unit: '元/kg', day: -10, dayPct: -0.34, week: 30, weekPct: 1.04 },
+          ].map((item, index) => (
+            <div key={index} className="bg-white rounded-lg p-3 shadow-sm">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="text-[#23303B] text-sm font-medium">{item.name}</h4>
+                <div className="text-right flex items-baseline gap-1">
+                  <div className="text-base text-[#23303B] font-semibold">¥{item.price}</div>
+                  <div className="text-[10px] text-[#A4A9AE]">{item.unit}</div>
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-2">
+                <div className="bg-[rgba(164,169,174,0.05)] rounded-md p-1.5 flex items-center justify-between">
+                  <div className="text-[10px] text-[#A4A9AE]">日涨跌</div>
+                  <div className={`flex items-center gap-0.5 text-xs font-medium ${item.day >= 0 ? 'text-[#FF6363]' : 'text-[#13C999]'}`}>
+                    {item.day >= 0 ? (
+                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                    ) : (
+                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                    )}
+                    <span>{item.dayPct > 0 ? '+' : ''}{item.dayPct.toFixed(2)}%</span>
+                  </div>
+                </div>
+                <div className="bg-[rgba(164,169,174,0.05)] rounded-md p-1.5 flex items-center justify-between">
+                  <div className="text-[10px] text-[#A4A9AE]">周涨跌</div>
+                   <div className={`flex items-center gap-0.5 text-xs font-medium ${item.week >= 0 ? 'text-[#FF6363]' : 'text-[#13C999]'}`}>
+                    {item.week >= 0 ? (
+                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                    ) : (
+                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>
+                    )}
+                    <span>{item.weekPct > 0 ? '+' : ''}{item.weekPct.toFixed(2)}%</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+          
+          <button onClick={onNavigateToMarket} className="w-full h-8 flex items-center justify-center text-[#A4A9AE] text-xs transition-colors hover:text-[#23303B]">
+            查看更多行情 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="ml-1"><polyline points="9 18 15 12 9 6"></polyline></svg>
+          </button>
+        </div>
       </div>
 
       {/* 磁材8个分类 */}

@@ -84,41 +84,6 @@ export default function MagneticCalculatorDetail({ onBack, onConfirmOrder }: Mag
         <h1 className="flex-1 text-center text-[#23303B] pr-8">价格计算</h1>
       </div>
 
-      {/* 步骤指示器 */}
-      <div className="bg-white px-4 py-5 mb-3">
-        <div className="flex items-center justify-between max-w-[320px] mx-auto">
-          {/* 步骤1 - 已完成 */}
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-[#456EFE] flex items-center justify-center mb-2">
-              <CheckCircle2 size={16} className="text-white" />
-            </div>
-            <span className="text-xs text-[#456EFE]">磁材计算</span>
-          </div>
-
-          {/* 连接线1 */}
-          <div className="flex-1 h-[2px] bg-[#456EFE] mx-3 mb-5"></div>
-
-          {/* 步骤2 - 当前步骤 */}
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-[#456EFE] flex items-center justify-center mb-2">
-              <span className="text-white text-sm">2</span>
-            </div>
-            <span className="text-xs text-[#456EFE]">价格计算</span>
-          </div>
-
-          {/* 连接线2 */}
-          <div className="flex-1 h-[2px] bg-[rgba(164,169,174,0.2)] mx-3 mb-5"></div>
-
-          {/* 步骤3 - 未完成 */}
-          <div className="flex flex-col items-center">
-            <div className="w-8 h-8 rounded-full bg-[rgba(164,169,174,0.1)] flex items-center justify-center mb-2">
-              <span className="text-[#A4A9AE] text-sm">3</span>
-            </div>
-            <span className="text-xs text-[#A4A9AE]">确认下单</span>
-          </div>
-        </div>
-      </div>
-
       {/* 滚动内容区域 */}
       <div className="flex-1 overflow-y-auto">
         {/* 订单数量输入区 */}
@@ -652,7 +617,7 @@ export default function MagneticCalculatorDetail({ onBack, onConfirmOrder }: Mag
         </div>
         <button
           onClick={onConfirmOrder}
-          className="w-full h-12 bg-gradient-to-r from-[#D946A6] to-[#9333EA] text-white rounded-lg transition-all active:opacity-90"
+          className="w-full h-12 bg-[#456EFE] text-white rounded-lg transition-all active:opacity-90 hover:bg-[#3A5ED9]"
         >
           开始下单
         </button>

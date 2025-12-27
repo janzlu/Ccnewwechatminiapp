@@ -101,41 +101,6 @@ export default function OrderConfirmPage({ onBack, onConfirmOrder, onViewOrderDe
 
       {/* 滚动内容区域 */}
       <div className="flex-1 overflow-y-auto pb-24">
-        {/* 步骤指示器 - 简洁版 */}
-        <div className="bg-white px-4 py-5 mb-3">
-          <div className="flex items-center justify-between max-w-[320px] mx-auto">
-            {/* 步骤1 */}
-            <div className="flex flex-col items-center">
-              <div className="w-8 h-8 rounded-full bg-[#456EFE] flex items-center justify-center mb-2">
-                <CheckCircle2 size={16} className="text-white" />
-              </div>
-              <span className="text-xs text-[#456EFE]">磁材计算</span>
-            </div>
-
-            {/* 连接线1 */}
-            <div className="flex-1 h-[2px] bg-[#456EFE] mx-3 mb-5"></div>
-
-            {/* 步骤2 */}
-            <div className="flex flex-col items-center">
-              <div className="w-8 h-8 rounded-full bg-[#456EFE] flex items-center justify-center mb-2">
-                <CheckCircle2 size={16} className="text-white" />
-              </div>
-              <span className="text-xs text-[#456EFE]">价格计算</span>
-            </div>
-
-            {/* 连接线2 */}
-            <div className="flex-1 h-[2px] bg-[#456EFE] mx-3 mb-5"></div>
-
-            {/* 步骤3 */}
-            <div className="flex flex-col items-center">
-              <div className="w-8 h-8 rounded-full bg-[#456EFE] flex items-center justify-center mb-2">
-                <CheckCircle2 size={16} className="text-white" />
-              </div>
-              <span className="text-xs text-[#456EFE]">确认下单</span>
-            </div>
-          </div>
-        </div>
-
         {/* 订单类型 */}
         <div className="bg-white px-4 py-4 mb-3">
           <h3 className="text-[#23303B] mb-3">订单类型</h3>

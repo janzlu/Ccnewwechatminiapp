@@ -4,20 +4,20 @@ import { ImageWithFallback } from './components/figma/ImageWithFallback';
 import image_2b4a1f80dae4b65e27749e20d72265b207e0fc5e from 'figma:asset/2b4a1f80dae4b65e27749e20d72265b207e0fc5e.png';
 import HomePage from './components/HomePage';
 import MallPage from './components/MallPage';
-import CalculatorPage from './components/CalculatorPage';
+import CalculatorPage from './components/CalculatorPage';  
 import MarketPage from './components/MarketPage';
 import ProfilePage from './components/ProfilePage';
 import AddressManagePage from './components/AddressManagePage';
 import ProductDetailPage from './components/ProductDetailPage';
-import ShoppingCartPage from './components/ShoppingCartPage';
+import ShoppingCartPage from './components/ShoppingCartPage';  
 import OrderConfirmPage from './components/OrderConfirmPage';
 import PaymentPage from './components/PaymentPage';
-import OrderSuccessPage from './components/OrderSuccessPage';
+import OrderSuccessPage from './components/OrderSuccessPage';  
 import MagneticCalculatorDetail from './components/MagneticCalculatorDetail';
 import OrderListPage from './components/OrderListPage';
 import OrderDetailPage from './components/OrderDetailPage';
 import SellFormPage from './components/SellFormPage';
-import SellSuccessPage from './components/SellSuccessPage';
+import SellSuccessPage from './components/SellSuccessPage';  
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -30,7 +30,7 @@ export default function App() {
   const tabs = [
     { id: 'home', label: '首页', icon: Home },
     { id: 'mall', label: '商城', icon: ShoppingCart },
-    { id: 'calculator', label: '磁材计算', icon: Calculator },
+    { id: 'calculator', label: '磁材计算', icon: Calculator },  
     { id: 'market', label: '市场行情', icon: TrendingUp },
     { id: 'profile', label: '我的', icon: User },
   ];
@@ -205,6 +205,9 @@ export default function App() {
           onNavigateToSell={() => {
             setSubPage('sellForm');
           }}
+          onNavigateToMarket={() => {
+            setActiveTab('market');
+          }}
         />; 
       case 'mall':
         return (
@@ -238,6 +241,9 @@ export default function App() {
           }}
           onNavigateToSell={() => {
             setSubPage('sellForm');
+          }}
+          onNavigateToMarket={() => {
+            setActiveTab('market');
           }}
         />;
     }

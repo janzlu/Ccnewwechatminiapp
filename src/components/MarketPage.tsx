@@ -5,40 +5,40 @@ import { useState } from 'react';
 // 模拟行情数据 - 与首页保持一致
 const marketData = {
   '镨钕金属': [
-    { date: 'Jul', price: 200 },
-    { date: 'Aug', price: 400 },
-    { date: 'Sep', price: 600 },
-    { date: 'Oct', price: 180 },
-    { date: 'Nov', price: 520 },
-    { date: 'Dec', price: 280 },
-    { date: 'Jan', price: 673 },
+    { date: '12/09', price: 200 },
+    { date: '12/10', price: 400 },
+    { date: '12/11', price: 600 },
+    { date: '12/12', price: 180 },
+    { date: '12/13', price: 520 },
+    { date: '12/14', price: 280 },
+    { date: '12/15', price: 673 },
   ],
   '镨钕氧化物': [
-    { date: 'Jul', price: 180 },
-    { date: 'Aug', price: 350 },
-    { date: 'Sep', price: 550 },
-    { date: 'Oct', price: 160 },
-    { date: 'Nov', price: 480 },
-    { date: 'Dec', price: 250 },
-    { date: 'Jan', price: 620 },
+    { date: '12/09', price: 180 },
+    { date: '12/10', price: 350 },
+    { date: '12/11', price: 550 },
+    { date: '12/12', price: 160 },
+    { date: '12/13', price: 480 },
+    { date: '12/14', price: 250 },
+    { date: '12/15', price: 620 },
   ],
   '金属镝': [
-    { date: 'Jul', price: 250 },
-    { date: 'Aug', price: 420 },
-    { date: 'Sep', price: 630 },
-    { date: 'Oct', price: 200 },
-    { date: 'Nov', price: 550 },
-    { date: 'Dec', price: 300 },
-    { date: 'Jan', price: 700 },
+    { date: '12/09', price: 250 },
+    { date: '12/10', price: 420 },
+    { date: '12/11', price: 630 },
+    { date: '12/12', price: 200 },
+    { date: '12/13', price: 550 },
+    { date: '12/14', price: 300 },
+    { date: '12/15', price: 700 },
   ],
   '镝铁合金': [
-    { date: 'Jul', price: 220 },
-    { date: 'Aug', price: 380 },
-    { date: 'Sep', price: 580 },
-    { date: 'Oct', price: 190 },
-    { date: 'Nov', price: 500 },
-    { date: 'Dec', price: 270 },
-    { date: 'Jan', price: 650 },
+    { date: '12/09', price: 220 },
+    { date: '12/10', price: 380 },
+    { date: '12/11', price: 580 },
+    { date: '12/12', price: 190 },
+    { date: '12/13', price: 500 },
+    { date: '12/14', price: 270 },
+    { date: '12/15', price: 650 },
   ],
 };
 
@@ -101,7 +101,7 @@ export default function MarketPage() {
       {/* 行情趋势图 */}
       <div className="bg-white p-4 shadow-sm">
         {/* 材料切换 */}
-        <div className="flex gap-2 mb-4 overflow-x-auto pb-1">
+        <div className="flex gap-2 mb-4 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {(Object.keys(marketData) as Array<keyof typeof marketData>).map((material) => (
             <button
               key={material}
@@ -122,7 +122,7 @@ export default function MarketPage() {
           <div className="flex items-baseline gap-3 mb-2">
             <span className="text-[36px] text-[#23303B] leading-none">{currentPrice}</span>
             <div className="flex items-center gap-3">
-              <span className={`text-lg ${parseFloat(priceChangePercent) >= 0 ? 'text-[#13C999]' : 'text-[#FF6363]'}`}>
+              <span className={`text-lg ${parseFloat(priceChangePercent) >= 0 ? 'text-[#FF6363]' : 'text-[#13C999]'}`}>
                 {parseFloat(priceChangePercent) >= 0 ? '+' : ''}
                 {priceChangePercent}%
               </span>
@@ -134,7 +134,7 @@ export default function MarketPage() {
               涨跌值: <span className="text-[#23303B]">{priceChange >= 0 ? '+' : ''}{priceChange.toFixed(1)}</span>
             </span>
             <span className="text-[#8E949A]">
-              涨跌幅: <span className={parseFloat(priceChangePercent) >= 0 ? 'text-[#13C999]' : 'text-[#FF6363]'}>{parseFloat(priceChangePercent) >= 0 ? '+' : ''}{priceChangePercent}%</span>
+              涨跌幅: <span className={parseFloat(priceChangePercent) >= 0 ? 'text-[#FF6363]' : 'text-[#13C999]'}>{parseFloat(priceChangePercent) >= 0 ? '+' : ''}{priceChangePercent}%</span>
             </span>
           </div>
         </div>
@@ -179,13 +179,13 @@ export default function MarketPage() {
       </div>
 
       {/* 市场价格列表 */}
-      <div className="p-4">
-        <div className="flex items-center justify-between mb-3">
-          <h3 className="text-[#23303B]">市场报价</h3>
-          <span className="text-sm text-[#A4A9AE]">更新时间: 11-29 14:30</span>
+      <div className="p-3">
+        <div className="flex items-center justify-between mb-[8px] px-[5px] py-[0px] mt-[12px] mr-[0px] ml-[0px]">
+          <h3 className="text-[#23303B] text-sm font-medium text-[20px]">市场报价</h3>
+          <span className="text-xs text-[#A4A9AE]">更新: 11-29 14:30</span>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-2">
           {priceList.map((item) => {
             const dayChange = item.currentPrice - item.yesterday;
             const dayChangePercent = ((dayChange / item.yesterday) * 100).toFixed(2);
@@ -193,46 +193,42 @@ export default function MarketPage() {
             const weekChangePercent = ((weekChange / item.weekAgo) * 100).toFixed(2);
 
             return (
-              <div key={item.name} className="bg-white rounded-xl p-4 shadow-sm">
-                <div className="flex items-center justify-between mb-3">
-                  <h4 className="text-[#23303B]">{item.name}</h4>
-                  <div className="text-right">
-                    <div className="text-xl text-[#23303B]">¥{item.currentPrice}</div>
-                    <div className="text-xs text-[#A4A9AE]">{item.unit}</div>
+              <div key={item.name} className="bg-white rounded-lg p-3 shadow-sm">
+                <div className="flex items-center justify-between mb-2">
+                  <h4 className="text-[#23303B] text-sm font-medium">{item.name}</h4>
+                  <div className="text-right flex items-baseline gap-1">
+                    <div className="text-base font-semibold text-[#23303B]">¥{item.currentPrice}</div>
+                    <div className="text-[10px] text-[#A4A9AE]">{item.unit}</div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 gap-2">
                   {/* 日涨跌 */}
-                  <div className="bg-[rgba(164,169,174,0.05)] rounded-lg p-3">
-                    <div className="text-xs text-[#A4A9AE] mb-1">日涨跌</div>
-                    <div className="flex items-center gap-1">
+                  <div className="bg-[rgba(164,169,174,0.05)] rounded-md p-1.5 flex items-center justify-between">
+                    <span className="text-[10px] text-[#A4A9AE]">日涨跌</span>
+                    <div className="flex items-center gap-0.5">
                       {dayChange >= 0 ? (
-                        <TrendingUp size={16} className="text-[#13C999]" />
+                        <TrendingUp size={12} className="text-[#FF6363]" />
                       ) : (
-                        <TrendingDown size={16} className="text-[#FF6363]" />
+                        <TrendingDown size={12} className="text-[#13C999]" />
                       )}
-                      <span className={dayChange >= 0 ? 'text-[#13C999]' : 'text-[#FF6363]'}>
-                        {dayChange >= 0 ? '+' : ''}
-                        {dayChange} ({dayChange >= 0 ? '+' : ''}
-                        {dayChangePercent}%)
+                      <span className={`text-xs font-medium ${dayChange >= 0 ? 'text-[#FF6363]' : 'text-[#13C999]'}`}>
+                        {dayChangePercent}%
                       </span>
                     </div>
                   </div>
 
                   {/* 周涨跌 */}
-                  <div className="bg-[rgba(164,169,174,0.05)] rounded-lg p-3">
-                    <div className="text-xs text-[#A4A9AE] mb-1">周涨跌</div>
-                    <div className="flex items-center gap-1">
+                  <div className="bg-[rgba(164,169,174,0.05)] rounded-md p-1.5 flex items-center justify-between">
+                    <span className="text-[10px] text-[#A4A9AE]">周涨跌</span>
+                    <div className="flex items-center gap-0.5">
                       {weekChange >= 0 ? (
-                        <TrendingUp size={16} className="text-[#13C999]" />
+                        <TrendingUp size={12} className="text-[#FF6363]" />
                       ) : (
-                        <TrendingDown size={16} className="text-[#FF6363]" />
+                        <TrendingDown size={12} className="text-[#13C999]" />
                       )}
-                      <span className={weekChange >= 0 ? 'text-[#13C999]' : 'text-[#FF6363]'}>
-                        {weekChange >= 0 ? '+' : ''}
-                        {weekChange} ({weekChange >= 0 ? '+' : ''}
-                        {weekChangePercent}%)
+                      <span className={`text-xs font-medium ${weekChange >= 0 ? 'text-[#FF6363]' : 'text-[#13C999]'}`}>
+                        {weekChangePercent}%
                       </span>
                     </div>
                   </div>
