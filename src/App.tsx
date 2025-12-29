@@ -17,14 +17,26 @@ import MagneticCalculatorDetail from './components/MagneticCalculatorDetail';
 import OrderListPage from './components/OrderListPage';
 import OrderDetailPage from './components/OrderDetailPage';
 import SellFormPage from './components/SellFormPage';
-import SellSuccessPage from './components/SellSuccessPage';  
+import SellSuccessPage from './components/SellSuccessPage';
+import SearchResultPage from './components/SearchResultPage';
+import UserInfoPage from './components/UserInfoPage';
+import LoginPage from './components/LoginPage';
+import PhoneLoginPage from './components/PhoneLoginPage';
+import MerchantDetailPage from './components/MerchantDetailPage';
+import DistributionCenterPage from './components/DistributionCenterPage';
+import DistributionRecordsPage from './components/DistributionRecordsPage';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
   const [subPage, setSubPage] = useState<string | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userProfile, setUserProfile] = useState<any>(null);
+
   const [selectedProductId, setSelectedProductId] = useState<number | null>(null);
   const [selectedOrderId, setSelectedOrderId] = useState<string | null>(null);
+  const [selectedMerchantId, setSelectedMerchantId] = useState<number | null>(null);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
   const [orderData, setOrderData] = useState<any>(null);
 
   const tabs = [
@@ -49,10 +61,6 @@ export default function App() {
           onBuyNow={(productId, quantity) => {
             setOrderData({ productId, quantity, items: [{ id: productId, quantity }] });
             setSubPage('orderConfirm');
-          }}
-          onAddToCart={(productId, quantity) => {
-            // TODO: 实际项目中这里应该添加到购物车状态
-            alert(`已添加 ${quantity} 件商品到购物车`);
           }}
         />
       );
@@ -192,6 +200,95 @@ export default function App() {
       );
     }
 
+    if (subPage === 'searchResult') {
+      return (
+        <SearchResultPage
+          initialQuery={searchQuery}
+          onBack={() => setSubPage(null)}
+          onProductClick={(productId) => {
+            setSelectedProductId(productId);
+            setSubPage('productDetail');
+          }}
+        />
+      );
+    }
+
+    if (subPage === 'userInfo') {
+      return (
+        <UserInfoPage
+          onBack={() => setSubPage(null)}
+          initialData={userProfile}
+          onUpdate={(newData) => setUserProfile({...userProfile, ...newData})}
+        />
+      );
+    }
+
+    if (subPage === 'login') {
+      return (
+        <LoginPage
+          onCancel={() => {
+            setSubPage(null);
+            // 如果是在"我的"页面点击取消，返回首页，避免停留在需要登录的页面
+            if (activeTab === 'profile') {
+              setActiveTab('home');
+            }
+          }}
+          onLoginSuccess={(userInfo) => {
+            setIsLoggedIn(true);
+            setUserProfile(userInfo);
+            setSubPage(null);
+          }}
+          onPhoneLoginClick={() => {
+            setSubPage('phoneLogin');
+          }}
+        />
+      );
+    }
+
+    if (subPage === 'phoneLogin') {
+      return (
+        <PhoneLoginPage
+          onBack={() => setSubPage('login')}
+          onLoginSuccess={(userInfo) => {
+            setIsLoggedIn(true);
+            setUserProfile(userInfo);
+            setSubPage(null);
+          }}
+        />
+      );
+    }
+
+    if (subPage === 'merchantDetail' && selectedMerchantId) {
+      return (
+        <MerchantDetailPage
+          merchantId={selectedMerchantId}
+          isLoggedIn={isLoggedIn}
+          onBack={() => setSubPage(null)}
+          onLogin={() => setSubPage('login')}
+        />
+      );
+    }
+
+    if (subPage === 'distributionCenter') {
+      return (
+        <DistributionCenterPage
+          onBack={() => setSubPage(null)}
+          onNavigateToRecords={() => setSubPage('distributionRecords')}
+          onNavigateToTeam={() => {}} // Placeholder
+          onNavigateToPoster={() => {}} // Placeholder
+          onNavigateToWithdraw={() => {}} // Placeholder
+        />
+      );
+    }
+
+    if (subPage === 'distributionRecords') {
+      return (
+        <DistributionRecordsPage
+          onBack={() => setSubPage('distributionCenter')}
+        />
+      );
+    }
+
     switch (activeTab) {
       case 'home':
         return <HomePage 
@@ -208,6 +305,14 @@ export default function App() {
           onNavigateToMarket={() => {
             setActiveTab('market');
           }}
+          onSearch={(query) => {
+            setSearchQuery(query);
+            setSubPage('searchResult');
+          }}
+          onNavigateToSupplier={(supplierId) => {
+            setSelectedMerchantId(supplierId);
+            setSubPage('merchantDetail');
+          }}
         />; 
       case 'mall':
         return (
@@ -216,7 +321,6 @@ export default function App() {
               setSelectedProductId(productId);
               setSubPage('productDetail');
             }}
-            onCartClick={() => setSubPage('shoppingCart')}
           />
         );
       case 'calculator':
@@ -229,7 +333,24 @@ export default function App() {
       case 'market':
         return <MarketPage />;
       case 'profile':
-        return <ProfilePage onNavigate={(page) => setSubPage(page)} />;
+        if (!isLoggedIn) {
+          // 如果未登录，直接显示登录页
+          // 注意：由于 renderPage 的逻辑，这里我们需要通过 setSubPage('login') 来触发
+          // 但在 render 期间直接 set state 是不好的。
+          // 更好的做法是 ProfilePage 内部处理未登录状态，或者在这里渲染一个“未登录的 ProfilePage”
+          // 让我们修改 ProfilePage 让它接受 isLoggedIn
+          return <ProfilePage 
+            onNavigate={(page) => setSubPage(page)} 
+            isLoggedIn={isLoggedIn} 
+            userInfo={userProfile}
+            onLogin={() => setSubPage('login')}
+          />;
+        }
+        return <ProfilePage 
+          onNavigate={(page) => setSubPage(page)} 
+          isLoggedIn={isLoggedIn}
+          userInfo={userProfile} 
+        />;
       default:
         return <HomePage 
           onNavigateToCalculator={(category) => {
@@ -244,6 +365,10 @@ export default function App() {
           }}
           onNavigateToMarket={() => {
             setActiveTab('market');
+          }}
+          onNavigateToSupplier={(supplierId) => {
+            setSelectedMerchantId(supplierId);
+            setSubPage('merchantDetail');
           }}
         />;
     }

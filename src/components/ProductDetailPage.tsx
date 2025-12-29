@@ -6,7 +6,6 @@ interface ProductDetailPageProps {
   productId: number;
   onBack: () => void;
   onBuyNow: (productId: number, quantity: number) => void;
-  onAddToCart: (productId: number, quantity: number) => void;
 }
 
 // 模拟商品详情数据
@@ -14,7 +13,13 @@ const productDetail = {
   id: 1,
   name: 'N35 钕铁硼方片',
   specs: '10×10×5mm',
-  price: 0.85,
+  price: 0.85, // 基础价格，由于现在有阶梯价格，这个字段可能主要用于列表页显示或作为默认值
+  tieredPrices: [
+    { min: 1, max: 100, price: 0.85 },
+    { min: 101, max: 500, price: 0.80 },
+    { min: 501, max: 1000, price: 0.75 },
+    { min: 1001, max: Infinity, price: 0.70 },
+  ],
   unit: '件',
   stock: 10000,
   category: 'finished',
@@ -38,12 +43,12 @@ const productDetail = {
   },
   services: [
     { icon: Shield, text: '品质保证' },
-    { icon: Truck, text: '48小时发货' },
-    { icon: RotateCcw, text: '7天无理由退换' },
+    { icon: Truck, text: '按约定时间发货' },
+    { icon: RotateCcw, text: '质量问题退换' },
   ],
 };
 
-export default function ProductDetailPage({ productId, onBack, onBuyNow, onAddToCart }: ProductDetailPageProps) {
+export default function ProductDetailPage({ productId, onBack, onBuyNow }: ProductDetailPageProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -64,10 +69,6 @@ export default function ProductDetailPage({ productId, onBack, onBuyNow, onAddTo
         </button>
         <h1 className="flex-1 text-center text-[#23303B] -ml-8">商品详情</h1>
         <div className="flex items-center gap-2">
-
-          <button className="p-1 cursor-pointer" type="button">
-            <ShoppingCart size={20} className="text-[#23303B]" />
-          </button>
         </div>
       </div>
 
@@ -101,21 +102,33 @@ export default function ProductDetailPage({ productId, onBack, onBuyNow, onAddTo
             <h2 className="text-[#23303B] text-lg mb-2">{productDetail.name}</h2>
             <p className="text-sm text-[#A4A9AE]">规格: {productDetail.specs}</p>
           </div>
-          <button
-            onClick={() => setIsFavorite(!isFavorite)}
-            className="p-2 cursor-pointer"
-            type="button"
-          >
-            <Heart
-              size={24}
-              className={isFavorite ? 'text-red-500 fill-red-500' : 'text-[#A4A9AE]'}
-            />
-          </button>
+          
         </div>
-        <div className="flex items-baseline gap-2">
-          <span className="text-[#456EFE] text-2xl">¥{productDetail.price}</span>
-          <span className="text-sm text-[#A4A9AE]">/{productDetail.unit}</span>
+
+        {/* 阶梯价格展示 */}
+        <div className="grid grid-cols-4 gap-2 mb-3">
+          {productDetail.tieredPrices.map((tier, index) => {
+            const isCurrentTier = quantity >= tier.min && (tier.max === Infinity ? true : quantity <= tier.max);
+            return (
+              <div 
+                key={index} 
+                className={`flex flex-col items-center justify-center p-2 rounded-lg border transition-colors ${
+                  isCurrentTier 
+                    ? 'bg-[#E8F0FF] border-[#456EFE]' 
+                    : 'bg-[#F9F9FB] border-transparent'
+                }`}
+              >
+                <span className={`text-xs mb-1 ${isCurrentTier ? 'text-[#456EFE]' : 'text-[#8E949A]'}`}>
+                  {tier.max === Infinity ? `> ${tier.min - 1}` : `${tier.min}-${tier.max}`}
+                </span>
+                <span className={`text-sm font-bold font-mono ${isCurrentTier ? 'text-[#456EFE]' : 'text-[#23303B]'}`}>
+                  ¥{tier.price}
+                </span>
+              </div>
+            );
+          })}
         </div>
+        
         <p className="text-sm text-[#A4A9AE] mt-2">库存: {productDetail.stock.toLocaleString()}{productDetail.unit}</p>
       </div>
 
@@ -166,7 +179,24 @@ export default function ProductDetailPage({ productId, onBack, onBuyNow, onAddTo
             >
               <Minus size={16} />
             </button>
-            <span className="w-12 text-center text-[#23303B]">{quantity}</span>
+            <input
+              type="number"
+              value={quantity === 0 ? '' : quantity}
+              onChange={(e) => {
+                const val = e.target.value;
+                if (val === '') {
+                  setQuantity(0);
+                } else {
+                  const num = parseInt(val);
+                  if (!isNaN(num)) setQuantity(num);
+                }
+              }}
+              onBlur={() => {
+                if (quantity < 1) setQuantity(1);
+                else if (quantity > productDetail.stock) setQuantity(productDetail.stock);
+              }}
+              className="w-12 text-center text-[#23303B] bg-transparent outline-none appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+            />
             <button
               onClick={() => handleQuantityChange(1)}
               disabled={quantity >= productDetail.stock}
@@ -178,13 +208,6 @@ export default function ProductDetailPage({ productId, onBack, onBuyNow, onAddTo
           </div>
 
           {/* 操作按钮 */}
-          <button
-            onClick={() => onAddToCart(productDetail.id, quantity)}
-            className="flex-1 h-11 bg-[rgba(69,110,254,0.1)] text-[#456EFE] rounded-lg transition-all hover:bg-[rgba(69,110,254,0.2)] cursor-pointer"
-            type="button"
-          >
-            加入购物车
-          </button>
           <button
             onClick={() => onBuyNow(productDetail.id, quantity)}
             className="flex-1 h-11 bg-[#456EFE] text-white rounded-lg transition-all hover:bg-[#3A5ED9] cursor-pointer"

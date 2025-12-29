@@ -1,10 +1,9 @@
-import { Search, SlidersHorizontal, Heart, ShoppingCart, Bookmark } from 'lucide-react';
+import { Search, SlidersHorizontal, Heart, Bookmark } from 'lucide-react';
 import { useState } from 'react';
 import { ImageWithFallback } from './figma/ImageWithFallback';
 
 interface MallPageProps {
   onProductClick?: (productId: number) => void;
-  onCartClick?: () => void;
 }
 
 const mainCategories = [
@@ -366,6 +365,79 @@ const products = [
     category: 'finished',
     subCategory: '方片',
     image: 'https://images.unsplash.com/photo-1596877454778-9103606a5349?w=400',
+    grade: 'N35',
+    material: '钕铁硼',
+    surface: '镀镍',
+  },
+  {
+    id: 101,
+    name: 'N35 钕铁硼方片 (小)',
+    specs: '5×5×2mm',
+    price: 0.45,
+    unit: '件',
+    stock: 20000,
+    category: 'finished',
+    subCategory: '方片',
+    image: 'https://images.unsplash.com/photo-1596877454778-9103606a5349?w=400',
+    grade: 'N35',
+    material: '钕铁硼',
+    surface: '镀镍',
+  },
+  {
+    id: 102,
+    name: 'N42 钕铁硼方片',
+    specs: '20×10×5mm',
+    price: 1.85,
+    unit: '件',
+    stock: 5000,
+    category: 'finished',
+    subCategory: '方片',
+    image: 'https://images.unsplash.com/photo-1596877454778-9103606a5349?w=400',
+    grade: 'N42',
+    material: '钕铁硼',
+    surface: '镀锌',
+  },
+  {
+    id: 103,
+    name: 'N52 强磁方片',
+    specs: '15×15×5mm',
+    price: 2.20,
+    unit: '件',
+    stock: 3000,
+    category: 'finished',
+    subCategory: '方片',
+    image: 'https://images.unsplash.com/photo-1596877454778-9103606a5349?w=400',
+    grade: 'N52',
+    material: '钕铁硼',
+    surface: '镀镍',
+  },
+  {
+    id: 104,
+    name: 'N38 沉孔方片',
+    specs: '30×10×5mm',
+    price: 3.50,
+    unit: '件',
+    stock: 4500,
+    category: 'finished',
+    subCategory: '方片',
+    image: 'https://images.unsplash.com/photo-1596877454778-9103606a5349?w=400',
+    grade: 'N38',
+    material: '钕铁硼',
+    surface: '镀镍',
+  },
+  {
+    id: 105,
+    name: 'N45 钕铁硼长方条',
+    specs: '50×10×3mm',
+    price: 4.80,
+    unit: '件',
+    stock: 2800,
+    category: 'finished',
+    subCategory: '方片',
+    image: 'https://images.unsplash.com/photo-1596877454778-9103606a5349?w=400',
+    grade: 'N45',
+    material: '钕铁硼',
+    surface: '环氧树脂',
   },
   {
     id: 2,
@@ -377,6 +449,9 @@ const products = [
     category: 'finished',
     subCategory: '圆片',
     image: 'https://images.unsplash.com/photo-1733309730239-1d2b723eb807?w=400',
+    grade: 'N52',
+    material: '钕铁硼',
+    surface: '镀镍',
   },
   {
     id: 3,
@@ -388,6 +463,9 @@ const products = [
     category: 'finished',
     subCategory: '圆环',
     image: 'https://images.unsplash.com/photo-1640184713828-5de60cad7a2c?w=400',
+    grade: 'N38',
+    material: '钕铁硼',
+    surface: '镀镍',
   },
   {
     id: 4,
@@ -399,6 +477,9 @@ const products = [
     category: 'finished',
     subCategory: '同心瓦',
     image: 'https://images.unsplash.com/photo-1655890954744-c9650a3b570d?w=400',
+    grade: 'N42',
+    material: '钕铁硼',
+    surface: '镀锌',
   },
   {
     id: 5,
@@ -410,6 +491,9 @@ const products = [
     category: 'blank',
     subCategory: '方块',
     image: 'https://images.unsplash.com/photo-1745449562896-71ba57d1e2b3?w=400',
+    grade: 'N40',
+    material: '钕铁硼',
+    surface: '无',
   },
   {
     id: 6,
@@ -421,6 +505,9 @@ const products = [
     category: 'blank',
     subCategory: '圆柱',
     image: 'https://images.unsplash.com/photo-1758467700651-b0cdd3346cc7?w=400',
+    grade: 'N42',
+    material: '钕铁硼',
+    surface: '无',
   },
   {
     id: 7,
@@ -432,6 +519,9 @@ const products = [
     category: 'material',
     subCategory: '镨钕',
     image: 'https://images.unsplash.com/photo-1758873263528-6dbd0422cf84?w=400',
+    grade: '99.5%',
+    material: '镨钕氧化物',
+    surface: '无',
   },
   {
     id: 8,
@@ -443,10 +533,13 @@ const products = [
     category: 'material',
     subCategory: '金属镝',
     image: 'https://images.unsplash.com/photo-1758691463569-66de91d76452?w=400',
+    grade: '99%',
+    material: '金属镝',
+    surface: '无',
   },
 ];
 
-export default function MallPage({ onProductClick, onCartClick }: MallPageProps) {
+export default function MallPage({ onProductClick }: MallPageProps) {
   const [selectedMainCategory, setSelectedMainCategory] = useState('finished');
   const [selectedSubCategory, setSelectedSubCategory] = useState('方片');
   const [selectedGrade, setSelectedGrade] = useState<string>('');
@@ -492,13 +585,6 @@ export default function MallPage({ onProductClick, onCartClick }: MallPageProps)
             className="w-full h-12 pl-11 pr-24 bg-[rgba(164,169,174,0.15)] rounded-lg text-[#23303B] placeholder:text-[#A4A9AE]"
           />
           <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
-            <button 
-              onClick={onCartClick}
-              className="text-[#A4A9AE] p-1 cursor-pointer"
-              type="button"
-            >
-              <ShoppingCart size={20} />
-            </button>
             <button className="text-[#A4A9AE] p-1 cursor-pointer" type="button">
               <SlidersHorizontal size={20} />
             </button>
@@ -645,51 +731,23 @@ export default function MallPage({ onProductClick, onCartClick }: MallPageProps)
 
                         {/* 商品信息 */}
                         <div className="flex-1 min-w-0">
-                          <h4 className="text-[#23303B] mb-1 truncate">{product.name}</h4>
-                          <p className="text-sm text-[#A4A9AE] mb-2">规格: {product.specs}</p>
-                          <div className="flex items-center justify-between">
-                            <div>
-                              <span className="text-[#456EFE] text-xl">¥{product.price}</span>
-                              <span className="text-sm text-[#A4A9AE] ml-1">/{product.unit}</span>
-                            </div>
-                            <button 
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                // TODO: 收藏功能
-                              }}
-                              className="w-8 h-8 rounded-full bg-[rgba(69,110,254,0.1)] flex items-center justify-center text-[#456EFE] cursor-pointer"
-                              type="button"
-                            >
-                              <Heart size={18} />
-                            </button>
+                          <h4 className="text-[#23303B] mb-2 truncate font-medium">{product.name}</h4>
+                          <div className="space-y-1 mb-2">
+                             <div className="flex items-center gap-2">
+                               <p className="text-xs text-[#8E949A]">性能等级：<span className="text-[#23303B]">{product.grade || '-'}</span></p>
+                               <p className="text-xs text-[#8E949A]">材质：<span className="text-[#23303B]">{product.material || '-'}</span></p>
+                             </div>
+                             <p className="text-xs text-[#8E949A]">尺寸：<span className="text-[#23303B]">{product.specs}</span></p>
+                             <p className="text-xs text-[#8E949A]">表面处理：<span className="text-[#23303B]">{product.surface || '-'}</span></p>
                           </div>
-                          <p className="text-xs text-[#A4A9AE] mt-2">库存: {product.stock.toLocaleString()}{product.unit}</p>
+                          
+                          <div className="flex items-center justify-between mt-2">
+                            <div>
+                              <span className="text-[#456EFE] text-lg font-bold">¥{product.price}</span>
+                              <span className="text-xs text-[#A4A9AE] ml-0.5">/{product.unit}</span>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-
-                      {/* 操作按钮 */}
-                      <div className="flex gap-2 mt-3">
-                        <button 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            // TODO: 加入购物车
-                            alert('已加入购物车');
-                          }}
-                          className="flex-1 h-9 bg-[rgba(69,110,254,0.1)] text-[#456EFE] rounded-lg transition-all hover:bg-[rgba(69,110,254,0.2)] cursor-pointer"
-                          type="button"
-                        >
-                          加入购物车
-                        </button>
-                        <button 
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            onProductClick?.(product.id);
-                          }}
-                          className="flex-1 h-9 bg-[#456EFE] text-white rounded-lg transition-all hover:bg-[#3A5ED9] cursor-pointer"
-                          type="button"
-                        >
-                          立即购买
-                        </button>
                       </div>
                     </div>
                   ))}

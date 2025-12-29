@@ -16,10 +16,23 @@ import {
 
 interface ProfilePageProps {
   onNavigate?: (page: string) => void;
+  isLoggedIn?: boolean;
+  userInfo?: any;
+  onLogin?: () => void;
 }
 
-export default function ProfilePage({ onNavigate }: ProfilePageProps) {
+export default function ProfilePage({ onNavigate, isLoggedIn = false, userInfo, onLogin }: ProfilePageProps) {
   const [activeTab, setActiveTab] = useState<'payment' | 'reservation'>('payment');
+  
+  // 处理点击用户信息的逻辑
+  const handleUserInfoClick = () => {
+    if (isLoggedIn) {
+      onNavigate?.('userInfo');
+    } else {
+      onLogin?.();
+    }
+  };
+
   return (
     <div className="min-h-full bg-[#F9F9FB]">
       {/* 顶部渐变区域 */}
@@ -33,13 +46,27 @@ export default function ProfilePage({ onNavigate }: ProfilePageProps) {
         </div>
 
         {/* 用户信息 */}
-        <div className="flex items-center gap-4 -mt-[15px]">
-          <div className="w-20 h-20 rounded-full bg-white/30 border-4 border-white/40 flex items-center justify-center">
-            <User size={40} className="text-white" />
+        <div 
+          className="flex items-center gap-4 -mt-[15px] cursor-pointer active:opacity-80 transition-opacity"
+          onClick={handleUserInfoClick}
+        >
+          <div className="w-20 h-20 rounded-full bg-white/30 border-4 border-white/40 flex items-center justify-center overflow-hidden">
+             {isLoggedIn && userInfo?.avatar ? (
+                <img src={userInfo.avatar} alt="Avatar" className="w-full h-full object-cover rounded-full" />
+             ) : (
+                <User size={40} className="text-white" />
+             )}
           </div>
           <div className="flex-1 text-white">
-            <h2 className="text-xl mb-1">18969817289</h2>
-            <p className="text-sm opacity-80">- 未有签名 -</p>
+            <div className="flex items-center gap-2">
+              <h2 className="text-xl mb-1">
+                {isLoggedIn ? (userInfo?.nickname || userInfo?.phone || '微信用户') : '点击登录'}
+              </h2>
+              {isLoggedIn && <Edit size={16} className="text-white/80" />}
+            </div>
+            <p className="text-sm opacity-80">
+              {isLoggedIn ? (userInfo?.signature || '- 未有签名 -') : '登录享受更多服务'}
+            </p>
           </div>
         </div>
       </div>
@@ -133,13 +160,25 @@ export default function ProfilePage({ onNavigate }: ProfilePageProps) {
             <ChevronRight size={20} className="text-[#A4A9AE]" />
           </button>
 
+          <button
+            onClick={() => onNavigate && onNavigate('distributionCenter')}
+            className="w-full flex items-center gap-3 px-4 py-4 border-b border-[rgba(164,169,174,0.1)]"
+          >
+            <FileText size={22} className="text-[#23303B]" />
+            <span className="flex-1 text-left text-[#23303B]">分销记录</span>
+            <ChevronRight size={20} className="text-[#A4A9AE]" />
+          </button>
+
           <button className="w-full flex items-center gap-3 px-4 py-4 border-b border-[rgba(164,169,174,0.1)]">
             <Ticket size={22} className="text-[#23303B]" />
             <span className="flex-1 text-left text-[#23303B]">优惠券</span>
             <ChevronRight size={20} className="text-[#A4A9AE]" />
           </button>
 
-          <button className="w-full flex items-center gap-3 px-4 py-4 border-b border-[rgba(164,169,174,0.1)]">
+          <button 
+            onClick={handleUserInfoClick}
+            className="w-full flex items-center gap-3 px-4 py-4 border-b border-[rgba(164,169,174,0.1)]"
+          >
             <Edit size={22} className="text-[#23303B]" />
             <span className="flex-1 text-left text-[#23303B]">编辑资料</span>
             <ChevronRight size={20} className="text-[#A4A9AE]" />
