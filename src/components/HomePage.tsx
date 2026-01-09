@@ -209,7 +209,7 @@ export default function HomePage({ onNavigateToCalculator, onNavigateToMall, onN
             <div className="mb-4">
               <div className="flex justify-between items-start mb-2">
                 <div className="flex items-baseline gap-3">
-                  <span className="text-[36px] text-[#23303B] leading-none font-mono font-medium">{currentPrice}</span>
+                  <span className="text-[24px] text-[#23303B] leading-none font-[Verdana] font-medium">{currentPrice}</span>
                   <span className={`text-lg font-mono font-medium ${parseFloat(priceChangePercent) >= 0 ? 'text-[#FF6363]' : 'text-[#13C999]'}`}>
                     {parseFloat(priceChangePercent) >= 0 ? '+' : ''}
                     {priceChangePercent}%

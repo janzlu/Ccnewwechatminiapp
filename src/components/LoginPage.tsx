@@ -80,7 +80,7 @@ export default function LoginPage({ onLoginSuccess, onCancel, onPhoneLoginClick 
             }`}
           >
             {isLoading ? (
-              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />  
             ) : (
               <>
                 <MessageCircle size={20} fill="currentColor" className="text-white" />
@@ -103,11 +103,15 @@ export default function LoginPage({ onLoginSuccess, onCancel, onPhoneLoginClick 
         <div className="flex items-start gap-2" onClick={() => setAgreed(!agreed)}>
           <div 
             id="agreement-checkbox"
-            className={`w-5 h-5 rounded-full border flex items-center justify-center mt-0.5 transition-colors ${
-              agreed ? 'bg-[#456EFE] border-[#456EFE]' : 'border-[#C4C9CE] bg-white'
+            className={`w-5 h-5 rounded border-2 flex items-center justify-center mt-0.5 transition-colors flex-shrink-0 ${
+              agreed ? 'bg-[#456EFE] border-[#456EFE]' : 'border-[#cccccc] bg-white'  
             }`}
           >
-            {agreed && <ShieldCheck size={12} className="text-white" />}
+            {agreed && (
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">  
+                <path d="M2 6L5 9L10 3" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            )}
           </div>
           <p className="text-xs text-[#8E949A] leading-5">
             登录即代表您已同意
