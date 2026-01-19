@@ -25,6 +25,7 @@ import PhoneLoginPage from './components/PhoneLoginPage';
 import MerchantDetailPage from './components/MerchantDetailPage';
 import DistributionCenterPage from './components/DistributionCenterPage';
 import DistributionRecordsPage from './components/DistributionRecordsPage';
+import ProductListPage from './components/ProductListPage';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState('home');
@@ -284,7 +285,15 @@ export default function App() {
     if (subPage === 'distributionRecords') {
       return (
         <DistributionRecordsPage
-          onBack={() => setSubPage('distributionCenter')}
+          onBack={() => setSubPage(null)}
+        />
+      );
+    }
+
+    if (subPage === 'productList') {
+      return (
+        <ProductListPage
+          onBack={() => setSubPage(null)}
         />
       );
     }
@@ -393,15 +402,7 @@ export default function App() {
               </>
             ) : (
               <>
-                <button 
-                  onClick={() => setActiveTab('home')}
-                  className="w-10 h-10 flex items-center justify-center"
-                >
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M19 12H5M12 19l-7-7 7-7"/>
-                  </svg>
-                </button>
-                <h1 className="flex-1 text-center text-[#23303B] text-xl -ml-10">
+                <h1 className="flex-1 text-center text-[#23303B] text-xl">
                   {activeTab === 'mall' && '商城'}
                   {activeTab === 'calculator' && '磁材计算'}
                   {activeTab === 'market' && '市场行情'}

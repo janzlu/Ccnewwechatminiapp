@@ -161,7 +161,7 @@ export default function ProfilePage({ onNavigate, isLoggedIn = false, userInfo, 
           </button>
 
           <button
-            onClick={() => onNavigate && onNavigate('distributionCenter')}
+            onClick={() => onNavigate && onNavigate('distributionRecords')}
             className="w-full flex items-center gap-3 px-4 py-4 border-b border-[rgba(164,169,174,0.1)]"
           >
             <FileText size={22} className="text-[#23303B]" />
